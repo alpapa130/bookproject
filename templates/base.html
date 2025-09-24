@@ -16,7 +16,10 @@
         </div>
         <div class="navbar-nav d-flex flex-row">
             {% if request.user.is_authenticated %}
-                <a class="nav-link mx-3" href="{% url 'accounts:logout' %}">ログアウト</a>
+                <form method="post" action="{% url 'accounts:logout' %}" class="mx-3">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link btn btn-link p-0 text-white">ログアウト</button>
+                </form>
             {% else %}
                 <a class="nav-link mx-3" href="{% url 'accounts:login' %}">ログイン</a>
                 <a class="nav-link mx-3" href="{% url 'accounts:signup' %}">会員登録</a>
