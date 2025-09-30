@@ -64,17 +64,20 @@ Pythonでのアプリケーション構築の勉強の為にBookfolioを開発�
   柔軟な検索・カテゴリ絞り込み、レビュー機能、ユーザー自身での書籍管理やプロフィール更新など、学習用途でも使いやすい書籍レビュー管理アプリです。
 </p>
 <h2>ER図</h2>
+
 <h2>主な使用技術</h2>
 
 | 区分 | 技術・ツール| 備考 |
 |---|---|---|
-| バ&#8288;ッ&#8288;ク&#8288;エ&#8288;ン&#8288;ド | Python 3.12 / Django 5.1 | 汎用（Generic）ビュー + CBV、LoginRequiredMixin 等 |
-| フ&#8288;ロ&#8288;ン&#8288;ト&#8288;エ&#8288;ン&#8288;ド | HTML5, CSS3（BEM+独自）, Bootstrap 5, JavaScript | IntersectionObserver など標準 API |
-| 認&#8288;証 | — | LoginRequiredMixin、`update_session_auth_hash` でセッション維持 |
-| デ&#8288;ー&#8288;タ&#8288;ベ&#8288;ー&#8288;ス | PostgreSQL（Render マネージド）, Django ORM（psycopg） | マイグレーションでスキーマ管理 |
-| イ&#8288;ン&#8288;フ&#8288;ラ | Render + PostgreSQL インスタンス | デプロイ先：Render |
-| ビ&#8288;ル&#8288;ド&#8288;/&#8288;運&#8288;用 | collectstatic / migrate / env | `dj-database-url` 併用可 |
-| バ&#8288;ー&#8288;ジ&#8288;ョ&#8288;ン&#8288;管&#8288;理 | Git / GitHub| リポジトリでソースと開発履歴管理 |
+| バックエンド | Python 3.12 / Django 5.1 | 汎用（Generic）ビュー + CBV、LoginRequiredMixin 等 |
+| フロントエンド | HTML5, CSS3（BEM+独自）, Bootstrap 5, JavaScript | IntersectionObserver など標準 API |
+| 認証 | — | LoginRequiredMixin、`update_session_auth_hash` でセッション維持 |
+| データベース | PostgreSQL（Render マネージド）, Django ORM（psycopg） | マイグレーションでスキーマ管理 |
+| インフラ | Render + PostgreSQL インスタンス | デプロイ先：Render |
+| ビルド/運用 | collectstatic / migrate / env | `dj-database-url` 併用可 |
+| バージョン管理 | Git / GitHub| リポジトリでソースと開発履歴管理 |
+| 開発環境 | venv（Python 仮想環境） / Visual Studio Code| - |
+| AI/開発支援 | GPT-5＋ Codex IDE extension (VS Code)| 設計レビュー・仕様補完・リファクタ・テスト生成に活用 |
 <h2>課題・反省点</h2>
 技術を学ぶことがメインであったことから、オリジナリティーがないアプリケーションとなってしまいました。
 次回はニーズなどを分析した上で、オリジナリティーのあるアプリケーションを開発したい。
