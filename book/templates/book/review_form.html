@@ -1,34 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}レビュー投稿{% endblock %}
-{% block h1 %}レビュー投稿{% endblock %}
+{% block title %}レビュー{% if mode == 'create' %}投稿{% else %}編集{% endif %}{% endblock %}
+
 {% block content %}
-    <form method="post" class="p-4 m-4 bg-light border border-success rounded form-group">
-        {% csrf_token %}
-        <label>
-            対象書籍
-        </label>
-        <input class="form-control" value="{{ book.title }}" readonly>
-        <label>
-            タイトル
-        </label>
-        <input class="form-control" name="title">
-        <label>
-            本文
-        </label>
-        <textarea class="form-control" name="text" rows="3"></textarea>
-        <label>
-            星の数
-        </label>
-        <select class="form-control" name="rate">
-            <option value="0">0（最低）</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3（普通）</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-        <input type="hidden" name="book" value="{{ book.id }}">
-        <button type= "submit" class="btn btn-success mt-4">投稿する</button>
-    </form>
-{% endblock %}
+  {# レビュー作成／編集フォーム。投稿モードは view 側で渡される #}
+  <form method="post" class="form-card">
+    {% csrf_token %}
+    <div class="form-card__group">
+      <label>対象書籍</label>
+      <input class="form-control" value="{{ book.title }}" readonly>
+    </div>
+    {% for field in form %}
+      <div class="form-card__group">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          <div class="form-error">{{ field.errors|striptags }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <div class="form-card__actions">
+      <a class="btn ghost" href="{% url 'book:detail-book' book.id %}">戻る</a>
+      <button type="submit" class="btn primary">{% if mode == 'create' %}投稿する{% else %}更新する{% endif %}</button>
+    </div>
+  </form>
+{% endblock content %}

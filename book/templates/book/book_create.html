@@ -3,8 +3,8 @@
 {% block title %}書籍作成{% endblock %}
 
 {% block content %}
-    <form method='post' entype="multipart/form-date" class="p-4 m-4 bg-light border border-success rounded form-group">{% csrf_token %}
+    <form method="post" enctype="multipart/form-data" class="p-4 m-4 bg-light rounded form-group">{% csrf_token %}
         {{form.as_p}}
-        <input type = 'submit' value= '作成する'>
+        <input type="submit" value="登録する">
     </form>
 {% endblock content %}

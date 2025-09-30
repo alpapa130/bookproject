@@ -1,17 +1,55 @@
 {% extends 'base.html' %}
 
 {% block title %}書籍一覧{% endblock %}
-{% block h1 %}書籍一覧{% endblock %}
 
 {% block content %}
-    {% for item in object_list %}
-    <div class="p-4 m-4 bg-light border border-success rounded">
-        <h2 class="text-success">{{ item.title }}</h2>
-        <h6>カテゴリ：{{ item.category }}</h6>
-        <div class="mt-3">
-            <a href="{% url 'detail-book' item.pk %}">詳細へ</a>
-        </div>
+  {# カテゴリフィルタと書籍件数をまとめたヘッダー #}
+  <div class="list-header">
+    {% if categories %}
+      <section class="category-bar">
+        <span class="category-bar__label">カテゴリで絞り込み</span>
+        <a class="category-pill{% if not current_category %} is-active{% endif %}" href="?{% if current_query %}q={{ current_query|urlencode }}{% endif %}">すべて</a>
+        {% for category in categories %}
+          <a class="category-pill{% if current_category == category.value %} is-active{% endif %}"
+             href="?cat={{ category.value|urlencode }}{% if current_query %}&amp;q={{ current_query|urlencode }}{% endif %}">{{ category.label }}</a>
+        {% endfor %}
+      </section>
+    {% endif %}
+    <div class="list-summary">合計：{{ total_books }}冊</div>
+  </div>
+
+  {# 検索条件が入力されている場合に条件を補足表示する #}
+  {% if current_query or current_category %}
+    <p class="search-result-meta">検索条件：
+      {% if current_query %}<span>キーワード「{{ current_query }}」</span>{% endif %}
+      {% if current_category %}<span>カテゴリ「{{ current_category_label|default:current_category }}」</span>{% endif %}
+    </p>
+  {% endif %}
+
+  {# ヒットした書籍をカードレイアウトで描画する #}
+  {% if object_list %}
+    <div class="book-grid">
+      {% for item in object_list %}
+        <article class="book-card">
+          <div class="book-card__thumb">
+            {% if item.thumbnail %}
+              <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}" loading="lazy" />
+            {% else %}
+              <div class="book-card__thumb--placeholder">No Image</div>
+            {% endif %}
+          </div>
+          <div class="book-card__body">
+            <h3 class="book-card__title">{{ item.title }}</h3>
+            <p class="book-card__text">{{ item.text|truncatechars:60 }}</p>
+            <div class="book-card__meta">
+              <span class="category-pill small">{{ item.get_category_display }}</span>
+              <a class="book-card__link" href="{% url 'book:detail-book' item.pk %}">詳細へ</a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
     </div>
-    {% endfor %}
-    {% include 'book/components/pagination.html' %}
+  {% else %}
+    <p class="empty">該当する書籍が見つかりませんでした。</p>
+  {% endif %}
 {% endblock content %}

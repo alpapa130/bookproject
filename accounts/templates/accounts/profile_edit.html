@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}会員情報の編集{% endblock %}
+
+{% block content %}
+  {# ユーザー名とパスワードの両方をまとめて更新するフォーム #}
+  <form method="post" class="form-card">
+    {% csrf_token %}
+    <p>ユーザー名とパスワードを更新します。現在のパスワードと新しいパスワードを入力してください。</p>
+    {% for field in form %}
+      <div class="form-card__group">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.errors %}
+          <div class="form-error">{{ field.errors|striptags }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <div class="form-card__actions">
+      <a class="btn ghost" href="{% url 'book:index' %}">トップへ戻る</a>
+      <button type="submit" class="btn primary">更新する</button>
+    </div>
+  </form>
+{% endblock content %}

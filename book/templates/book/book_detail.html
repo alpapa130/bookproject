@@ -1,26 +1,59 @@
 {% extends 'base.html' %}
+
 {% block title %}{{ object.title }}{% endblock %}
-{% block h1 %}書籍詳細{% endblock %}
+
 {% block content %}
-    <div class="p-4 m-4 bg-light borded border-success rounded">
-        <h2 class="text-success">{{ object.title }}</h2>
-            <p>{{ object.text }}</p> 
-            <div class="border p-4 mb-2">
-                {% for review in object.review_set.all %}
-                <div>
-                    <h3 class="h4">{{ review.title }}</h3>
-                    <div class="px-2">
-                        <span>(投稿ユーザー：{{ review.user.username }})</span>
-                        <h6>評価：{{ review.rate }}点</h6>
-                        <p>{{ review.text }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            <a href="{% url 'list-book' %}" class="btn btn-primary">一覧へ</a>
-            <a href="{% url 'review' object.pk %}" class="btn btn-primary">レビューする</a>
-            <a href="{% url 'update-book' object.pk %}" class="btn btn-primary">編集する</a>
-            <a href="{% url 'delete-book' object.pk %}" class="btn btn-primary">削除する</a>
-            <h6 class="card-title">{{ object.category }}</h6> 
+  {# 書籍の基本情報をカードスタイルで表示する #}
+  <div class="detail-card">
+    <div class="detail-card__head">
+      <h2>{{ object.title }}</h2>
+      <span class="category-pill small">{{ object.get_category_display }}</span>
     </div>
-{% endblock content %}  
+    {% if object.thumbnail %}
+      <div class="detail-card__thumb">
+        <img src="{{ object.thumbnail.url }}" alt="{{ object.title }}">
+      </div>
+    {% endif %}
+    <p class="detail-card__text">{{ object.text|linebreaksbr }}</p>
+    <p class="detail-card__meta">登録者：{{ object.user.username }}</p>
+    <div class="detail-card__actions">
+      {# 一覧に戻る／レビュー投稿／編集・削除といった操作リンク群 #}
+      <a class="btn ghost" href="{% url 'book:list-book' %}">一覧へ</a>
+      <a class="btn primary" href="{% url 'book:review' object.pk %}">レビューする</a>
+      {% if is_owner %}
+        <a class="btn ghost" href="{% url 'book:update-book' object.pk %}">書籍を編集</a>
+        <form method="post" action="{% url 'book:delete-book' object.pk %}" onsubmit="return confirm('本当に削除しますか？');">
+          {% csrf_token %}
+          <button type="submit" class="btn danger">書籍を削除</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+
+  {# レビュー一覧。投稿者本人のみ編集／削除を表示する #}
+  <section class="section">
+    <div class="section__heading">レビュー</div>
+    {% if reviews %}
+      <div class="review-list">
+        {% for review in reviews %}
+          <article class="review-card">
+            <div class="review-card__head">
+              <h3>{{ review.title }}</h3>
+              <span class="review-card__rating">{{ review.rate }} 点</span>
+            </div>
+            <div class="review-card__meta">投稿：{{ review.user.username }}</div>
+            <p class="review-card__text">{{ review.text|linebreaksbr }}</p>
+            {% if review.user == request.user %}
+              <div class="review-card__actions">
+                <a class="btn ghost" href="{% url 'book:review-edit' review.pk %}">編集</a>
+                <a class="btn danger" href="{% url 'book:review-delete' review.pk %}">削除</a>
+              </div>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty">まだレビューが投稿されていません。最初のレビューを書いてみませんか？</p>
+    {% endif %}
+  </section>
+{% endblock content %}

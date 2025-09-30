@@ -11,7 +11,7 @@ RATE_CHOICES = [(x, str(x)) for x in range(0, MAX_RATE + 1)]
 #     title = models.CharField(max_length=100)
 #     number = models.IntegerField()
 
-CATEGORY = (('business', 'ビジネス'), ('life', '生活'), ('other', 'その他'))
+CATEGORY = (('technical', '技術書'), ('novel', '小説'), ('magazine', '雑誌'), ('law', '法律'),('comics', 'コミック'),('business', 'ビジネス'),('qualification', '資格'),('other', 'その他'))
 
 class Book(models.Model):
     title = models.CharField(max_length=100)

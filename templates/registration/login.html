@@ -1,20 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
- <h1>ログイン</h1>
- <form method="post" class="p-4 m-4 bg-light border border-success rounded form-group">
+  <h1>ログイン</h1>
+  <form method="post" class="form-card">
     {% csrf_token %}
-    {% for error in form.errors.values %}
-        {{ error }}
+    {% for hidden_field in form.hidden_fields %}
+      {{ hidden_field }}
     {% endfor %}
-    <label>
-        ユーザーID
-    </label>
-    <input class="form-control" name="username">
-    <label>
-        パスワード
-    </label>
-    <input type="password" class="form-control" name="password">
-    <button type="submit" class="btn btn-success mt-4">ログインする</button>
- </form>
+    {% if form.non_field_errors %}
+      <div class="form-error">{{ form.non_field_errors|striptags }}</div>
+    {% endif %}
+    {% for field in form.visible_fields %}
+      <div class="form-card__group">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.help_text %}
+          <small class="text-muted">{{ field.help_text }}</small>
+        {% endif %}
+        {% if field.errors %}
+          <div class="form-error">{{ field.errors|striptags }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <div class="form-card__actions">
+      <button type="submit" class="btn primary">ログインする</button>
+    </div>
+  </form>
 {% endblock %}

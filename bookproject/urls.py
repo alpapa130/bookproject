@@ -20,11 +20,13 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    # 管理サイト。運営者向け UI を `/admin/` で提供する
     path('admin/', admin.site.urls),
-    #ユーザのログインやログアウトなどの機能を実装
+    # 認証関連 URL を accounts アプリに委譲（ログイン・ログアウト・会員登録など）
     path('accounts/', include('accounts.urls')),
-    #プロジェクトのurls.pyファイルからアプリのurls.pyファイルを呼び出すためのコード
+    # 書籍アプリのルーティングをプロジェクト配下のトップパスに割り当てる
     path('', include('book.urls')),
 ]
 
+# 画像アップロード（MEDIA）を開発環境で配信できるよう、static() を利用して URL を追加
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

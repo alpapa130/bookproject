@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}レビュー削除{% endblock %}
+
+{% block content %}
+  {# レビュー削除の最終確認。元に戻せないことを明示する #}
+  <div class="form-card">
+    <p>「{{ object.title }}」のレビューを削除します。元に戻せませんがよろしいですか？</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-card__actions">
+        <a class="btn ghost" href="{% url 'book:detail-book' object.book.id %}">戻る</a>
+        <button type="submit" class="btn danger">削除する</button>
+      </div>
+    </form>
+  </div>
+{% endblock content %}
