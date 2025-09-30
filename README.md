@@ -64,7 +64,7 @@ Pythonでのアプリケーション構築の勉強の為にBookfolioを開発�
   柔軟な検索・カテゴリ絞り込み、レビュー機能、ユーザー自身での書籍管理やプロフィール更新など、学習用途でも使いやすい書籍レビュー管理アプリです。
 </p>
 <h2>ER図</h2>
-
+<img src="https://github.com/alpapa130/bookproject/blob/main/book/er/book_er.png?raw=true">
 <h2>主な使用技術</h2>
 
 | 区分 | 技術・ツール| 備考 |
