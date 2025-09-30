@@ -1,0 +1,13 @@
+digraph ER {
+    graph [splines=ortho, nodesep=1.0, ranksep=1.4, bgcolor=white];
+    node [shape=record, fontsize=12, fontname="Helvetica"];
+    edge [color="#4B89DC", penwidth=1.4, arrowsize=0.8, fontname="Helvetica", fontsize=11];
+
+    AUTH_USER [label="{AUTH_USER|id (PK)\lusername\lemail\lpassword\l… (Django fields)\l}", style="rounded,filled", fillcolor="#DDE9FB", color="#4B89DC"];
+    BOOK [label="{BOOK|id (PK)\ltitle\ltext\lcategory\lthumbnail\luser_id (FK → AUTH_USER)\l}", style="rounded,filled", fillcolor="#E6F5D0", color="#4B89DC"];
+    REVIEW [label="{REVIEW|id (PK)\ltitle\ltext\lrate\lbook_id (FK → BOOK)\luser_id (FK → AUTH_USER)\l}", style="rounded,filled", fillcolor="#FDE4CF", color="#4B89DC"];
+
+    AUTH_USER -> BOOK [label="1 : n", color="#4B89DC"];
+    AUTH_USER -> REVIEW [label="1 : n", color="#4B89DC"];
+    BOOK -> REVIEW [label="1 : n", color="#4B89DC"];
+}
